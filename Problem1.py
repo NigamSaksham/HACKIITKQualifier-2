@@ -44,4 +44,10 @@ Note:
  - You must follow the exact output format to receive full marks. Pay close attention to spacing and symbols as defined in the output format above.
  - During evaluation, a different .csv file will be used to test the program's adaptability. Avoid hardcoding values.
  - There are a total of five test cases (one visible and four invisible) to validate your answer. Each test case is worth 20 points, making a total of 100 points (5 × 20 = 100).
+
 '''
+import pandas as pd
+
+# Load the CSV file
+file_path = input()
+data = pd.read_csv(file_path)
