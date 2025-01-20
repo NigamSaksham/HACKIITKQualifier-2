@@ -47,7 +47,68 @@ Note:
 
 '''
 import pandas as pd
+import re
 
-# Load the CSV file
-file_path = input()
-data = pd.read_csv(file_path)
+def detect_sql_injection(info):
+    # A simple regex pattern to detect SQL injection attempts
+    sql_injection_patterns = [
+        r"(?i)' or '1'='1",  # Common SQL injection pattern
+        r"(?i)' --",         # SQL comment pattern
+        r"(?i)union select", # UNION SELECT pattern
+        r"(?i)select.+from", # SELECT FROM pattern
+        r"(?i)or 1=1",       # OR 1=1 pattern
+        r"(?i)' or 1=1 --",  # Another common pattern
+        r"(?i)';",           # Ending with a semi-colon
+        r"(?i)\bupdate\b",   # UPDATE statement
+        r"(?i)\bdelete\b",   # DELETE statement
+        r"(?i)\binsert\b",   # INSERT statement
+    ]
+    for pattern in sql_injection_patterns:
+        if re.search(pattern, info):
+            return True
+    return False
+
+def extract_uri(info):
+    # Extract URI path and parameters
+    match = re.search(r'(GET|POST) (.+?) (HTTP|HTTPS)/[0-9.]+', info, re.IGNORECASE)
+    if match:
+        return match.group(2)
+    return None
+
+def main():
+    # Load the CSV file
+    file_path = input().strip()
+    data = pd.read_csv(file_path)
+    
+    sql_injection_attempts = []
+    
+    for index, row in data.iterrows():
+        if detect_sql_injection(row['Info']):
+            uri = extract_uri(row['Info'])
+            if uri:
+                sql_injection_attempts.append((row['Time'], row['Source'], uri))
+    
+    if sql_injection_attempts:
+        # Sort attempts by time
+        sql_injection_attempts.sort()
+        
+        attacker_ip = sql_injection_attempts[0][1]
+        first_payload = sql_injection_attempts[0][2]
+        last_payload = sql_injection_attempts[-1][2]
+        total_attempts = len(sql_injection_attempts)
+        payloads_with_colon = sum(1 for attempt in sql_injection_attempts if ':' in attempt[2])
+        
+        print(f"1A:-{attacker_ip}-;")
+        print(f"2A:-{total_attempts}-;")
+        print(f"3A:-{first_payload}-;")
+        print(f"4A:-{last_payload}-;")
+        print(f"5A:-{payloads_with_colon}-;")
+    else:
+        print("1A:-NULL-;")
+        print("2A:-0-;")
+        print("3A:-NULL-;")
+        print("4A:-NULL-;")
+        print("5A:-0-;")
+
+if __name__ == "__main__":
+    main()
