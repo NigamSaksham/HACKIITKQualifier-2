@@ -1,0 +1,37 @@
+import hashlib
+
+def getMerkleRoot(transactions,ball=True):
+    if len(transactions)==1:
+        if ball:
+            return hashlib.sha256(transactions[0].encode(('utf-8')).hexdigest())
+        return transaction[0]
+    if len(transactions) % 2 != 0:
+        transactions.append(transactions[-1])
+    new_transactions = []
+    for i in range(0, len(transactions), 2):
+        combined_hash = hashlib.sha256((transactions[i] + transactions[i + 1]).encode('utf-8')).hexdigest()
+        new_transactions.append(combined_hash)
+    return getMerkleRoot(new_transactions,False)
+
+def main():
+    transactions = []
+    T = int(input("Enter Number of Test Cases"))
+    if T<1 or T>10:
+        print("Invalid Number of Test Cases")
+        return
+    for i in range(0,T):
+        N = int(input("Enter Number of Transactions"))
+        if N<1 or N>100:
+            print("Invalid Number of Transactions")
+            return
+        for j in range(0,N):
+            transactions.append(input("Enter Transaction:"))
+        print(getMerkleRoot(transactions))
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
