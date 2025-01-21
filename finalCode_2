@@ -4,7 +4,7 @@ def getMerkleRoot(transactions,ball=True):
     if len(transactions)==1:
         if ball:
             return hashlib.sha256(transactions[0].encode(('utf-8')).hexdigest())
-        return transaction[0]
+        return transactions[0]
     if len(transactions) % 2 != 0:
         transactions.append(transactions[-1])
     new_transactions = []
