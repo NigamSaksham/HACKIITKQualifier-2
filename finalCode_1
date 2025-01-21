@@ -71,8 +71,8 @@ def main():
         print(f"1A: {attacker_ip}")
         print(f"2A: {total_attempts}")
         print(f"3A: {first_payload}")
-        print(f"4A: {last_payload} ")
-        print(f"5A: {payloads_with_colon} ")
+        print(f"4A: {last_payload}")
+        print(f"5A: {payloads_with_colon}")
     else:
         print("1A: NULL")
         print("2A: 0")
