@@ -3,7 +3,7 @@ import hashlib
 def getMerkleRoot(transactions,ball=True):
     if len(transactions)==1:
         if ball:
-            return hashlib.sha256(transactions[0].encode(('utf-8')).hexdigest())
+            return hashlib.sha256(transactions[0].encode('utf-8')).hexdigest()
         return transactions[0]
     if len(transactions) % 2 != 0:
         transactions.append(transactions[-1])
@@ -15,23 +15,25 @@ def getMerkleRoot(transactions,ball=True):
 
 def main():
     transactions = []
-    T = int(input("Enter Number of Test Cases"))
+    merkel_root = []
+    T = int(input())
     if T<1 or T>10:
         print("Invalid Number of Test Cases")
         return
     for i in range(0,T):
-        N = int(input("Enter Number of Transactions"))
+        N = int(input())
         if N<1 or N>100:
             print("Invalid Number of Transactions")
             return
         for j in range(0,N):
-            transactions.append(input("Enter Transaction:"))
-        print(getMerkleRoot(transactions))
+            transactions.append(input())
+        merkel_root.append(getMerkleRoot(transactions))
+        transactions.clear()
+    for _ in merkel_root:
+        print(_)
+
 
 if __name__ == '__main__':
     main()
-
-
-
 
 
